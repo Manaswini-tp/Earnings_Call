@@ -1,4 +1,4 @@
-# app.py - OpenEnv compliant version
+# app.py - OpenEnv compliant version (FINAL FIXED)
 
 import os
 import traceback
@@ -29,21 +29,27 @@ except Exception as e:
 
 
 # -------------------------
-# FastAPI APP (OpenEnv)
+# FastAPI APP (IMPORTANT: must be named 'app')
 # -------------------------
-api_app = FastAPI()
+app = FastAPI()
 
 
 class StepRequest(BaseModel):
     answer: str
 
 
-@api_app.get("/health")
+# Root endpoint (debug + prevents 404 confusion)
+@app.get("/")
+def root():
+    return {"message": "Earnings Call API is running"}
+
+
+@app.get("/health")
 def health():
     return {"status": "ok"}
 
 
-@api_app.post("/reset")
+@app.post("/reset")
 def reset():
     if env is None:
         return {"error": "Environment not initialized"}
@@ -51,13 +57,14 @@ def reset():
     observation = env.reset()
 
     return {
-        "observation": observation,
+        "observation": observation if observation is not None else {},
         "reward": 0.0,
         "done": False,
         "info": {}
     }
 
-@api_app.post("/step")
+
+@app.post("/step")
 def step(request: StepRequest):
     if env is None:
         return {"error": "Environment not initialized"}
@@ -80,12 +87,16 @@ def step(request: StepRequest):
         }
 
 
-@api_app.get("/state")
+@app.get("/state")
 def state():
     if env is None:
         return {"error": "Environment not initialized"}
 
     return env.state()
 
+
+# -------------------------
+# RUN SERVER
+# -------------------------
 if __name__ == "__main__":
-    uvicorn.run(api_app, host="0.0.0.0", port=7860)
+    uvicorn.run(app, host="0.0.0.0", port=7860)
