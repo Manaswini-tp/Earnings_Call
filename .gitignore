@@ -1,0 +1,47 @@
+# .gitignore content
+# Virtual Environment
+venv/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment variables (contains API keys!)
+.env
+*.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Docker
+.docker/
+
+# Local data (keep sample data, ignore custom transcripts)
+data/transcripts/*/custom_*
+!data/transcripts/*/sample_*
+
+# OS files
+Thumbs.db
+Desktop.ini

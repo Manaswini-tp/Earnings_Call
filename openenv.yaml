@@ -1,0 +1,73 @@
+name: earnings-call-qa
+version: 1.0.0
+description: |
+  AI agent environment for earnings call Q&A. Agent reads real earnings 
+  call transcripts and answers analyst questions about financial metrics,
+  risk factors, and forward guidance. Tests information retrieval, 
+  understanding, and synthesis of conflicting information.
+
+authors:
+  - name: Your Name
+    email: your@email.com
+
+tags:
+  - finance
+  - earnings-calls
+  - question-answering
+  - financial-analysis
+  - nlp
+
+tasks:
+  - id: extract
+    name: Financial Metric Extraction
+    difficulty: easy
+    description: Extract specific numerical metrics (EPS, revenue) from transcript
+    expected_score: 0.95
+    
+  - id: identify
+    name: Risk Factor Identification
+    difficulty: medium
+    description: Identify and list risk factors mentioned by management
+    expected_score: 0.75
+    
+  - id: synthesize
+    name: Forward Guidance Synthesis
+    difficulty: hard
+    description: Synthesize conflicting guidance signals into net earnings outlook
+    expected_score: 0.70
+
+observation_space:
+  - name: transcript
+    type: string
+    description: Full earnings call transcript text
+    
+  - name: question
+    type: string
+    description: Analyst-style question to answer
+    
+  - name: task_type
+    type: string
+    description: One of 'extract', 'identify', or 'synthesize'
+    enum: ["extract", "identify", "synthesize"]
+    
+  - name: turn_number
+    type: integer
+    description: Current turn number (max 1 per task)
+    minimum: 1
+    maximum: 1
+
+action_space:
+  - name: answer
+    type: string
+    description: Agent's free-text answer to the question
+
+reward_range: [0.0, 1.0]
+
+max_episode_steps: 3
+
+baseline_score: 0.80
+baseline_model: "gpt-4"
+
+version_history:
+  - version: 1.0.0
+    changes: Initial release
