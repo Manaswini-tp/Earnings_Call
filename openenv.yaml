@@ -71,3 +71,8 @@ baseline_model: "gpt-4"
 version_history:
   - version: 1.0.0
     changes: Initial release
+
+endpoints:
+  reset: /reset
+  step: /step
+  state: /state

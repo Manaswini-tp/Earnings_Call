@@ -3,6 +3,10 @@ import os
 import sys
 import gradio as gr
 import traceback
+# Add these imports
+from fastapi import FastAPI
+from pydantic import BaseModel
+import uvicorn
 
 print("Starting Earnings Call Environment...")
 
@@ -117,6 +121,35 @@ with gr.Blocks(title="Earnings Call Q&A Environment") as demo:
     
     gr.Markdown("---")
     gr.Markdown("**OpenEnv Compliant** | Built for Hackathon")
+# Create FastAPI app for OpenEnv compliance
+api_app = FastAPI()
+
+class StepRequest(BaseModel):
+    task_type: str
+    answer: str
+
+@api_app.post("/reset")
+def reset(task_type: str = "extract"):
+    env.reset(task_type=task_type)
+    return {"status": "ok", "task": task_type}
+
+@api_app.post("/step")
+def step(request: StepRequest):
+    observation = env.reset(task_type=request.task_type)
+    action = Action(answer=request.answer)
+    _, reward, done, info = env.step(action)
+    return {"reward": reward, "done": done, "info": info}
+
+@api_app.get("/state")
+def state():
+    return env.state()
 
 if __name__ == "__main__":
-    demo.launch(server_name="127.0.0.1", server_port=7860)
+    import threading
+    import uvicorn
+    
+    # Run FastAPI in a separate thread (for API endpoints)
+    threading.Thread(target=lambda: uvicorn.run(api_app, host="0.0.0.0", port=7861), daemon=True).start()
+    
+    # Run Gradio UI
+    demo.launch(server_name="0.0.0.0", server_port=7860)
