@@ -1,0 +1,11 @@
+[project]
+name = "earnings-call-env"
+version = "0.1.0"
+description = "Earnings Call Q&A OpenEnv environment"
+requires-python = ">=3.10"
+
+dependencies = [
+    "openenv-core>=0.2.0"
+]
+[project.scripts]
+server = "app:api_app"
