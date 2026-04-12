@@ -89,7 +89,7 @@ class EarningsCallEnv:
         efficiency_penalty = -min(len(answer.split()) / 200, 0.1)
         
         final_score = score + hallucination_penalty + efficiency_penalty
-        final_score = max(0, min(1, final_score))
+        final_score = max(0.01, min(0.99, final_score))
         
         # Return 4 values: (observation, reward, done, info)
         observation = None  # Episode ends after one step
