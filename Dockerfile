@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY env/ ./env/
 COPY sample_data.py .
 COPY openenv.yaml .
-COPY app.py .
+COPY server/ ./server/
 COPY inference.py .
 COPY pyproject.toml .
 
@@ -34,4 +34,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:7860/health || exit 1
 
 # Run FastAPI server
-CMD ["python", "app.py"]
+CMD ["python", "server/app.py"]
