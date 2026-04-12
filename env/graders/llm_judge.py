@@ -63,7 +63,7 @@ def llm_judge_grader(answer: str, question: str, transcript: str, rubric: dict =
     feedback += f"  Factual grounding: {breakdown['factual_grounding']:.3f}\n"
     feedback += f"  Reasoning quality: {breakdown['reasoning_quality']:.3f}\n"
     feedback += f"  Completeness: {breakdown['completeness']:.3f}"
-    
+    total_score = max(0.01, min(0.99, total_score))
     return {
         "score": total_score,
         "breakdown": breakdown,

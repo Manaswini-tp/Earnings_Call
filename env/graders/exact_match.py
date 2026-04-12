@@ -38,6 +38,7 @@ def exact_match_grader(answer: str, ground_truth: dict, tolerance: float = 0.01)
             else:
                 breakdown[key] = 0.0
                 feedback.append(f"✗ {key}: '{expected}' not found in answer")
+    score = max(0.01, min(0.99, score))
     
     return {
         "score": score,

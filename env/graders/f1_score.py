@@ -91,6 +91,7 @@ def f1_grader(answer: str, ground_truth: list) -> dict:
             feedback = f"F1 Score: {score:.3f} - Your answer structure is good, but try using exact phrases from the transcript."
         else:
             feedback = f"F1 Score: {score:.3f} - Needs improvement. List risks as numbered items using phrases from the transcript."
+    score = max(0.01, min(0.99, score))
     
     return {
         "score": min(score, 1.0),
